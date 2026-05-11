@@ -1,0 +1,8 @@
+uint64 timestamp
+int32 mtv_open_close
+int32 cooling_open_close
+int32 main_valve_open_close
+int32 pressurize_valve_open_close
+int32 depressurize_valve_open_close
+int32 auto_state1
+int32 auto_state2

@@ -1,0 +1,5 @@
+menuconfig TEMPLATES_TEMPLATE_MODULE_1
+	bool "template_module_2"
+	default n
+	---help---
+		Enable support for template_module

@@ -1,0 +1,3 @@
+menuconfig MODULES_CUSTOM_PUBLISHER
+    bool "custom publisher"
+    default y

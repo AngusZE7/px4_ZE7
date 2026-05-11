@@ -68,6 +68,8 @@
 #include "streams/COMMAND_LONG.hpp"
 #include "streams/COMPONENT_INFORMATION.hpp"
 #include "streams/COMPONENT_METADATA.hpp"
+#include "streams/CUSTOM_UP.hpp"
+
 #include "streams/DISTANCE_SENSOR.hpp"
 #include "streams/EFI_STATUS.hpp"
 #if defined(MAVLINK_MSG_ID_ESTIMATOR_SENSOR_FUSION_STATUS)

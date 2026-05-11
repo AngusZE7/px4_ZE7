@@ -69,6 +69,23 @@
 #else
 #define MAVLINK_RECEIVER_NET_ADDED_STACK 0
 #endif
+void MavlinkReceiver::handle_message_custom_down(mavlink_message_t *msg)
+{
+    mavlink_custom_down_t custom_cmd{};
+    mavlink_msg_custom_down_decode(msg, &custom_cmd);
+
+    custom_down_s data{};
+    data.timestamp                     = hrt_absolute_time();
+    data.mtv_open_close                = custom_cmd.mtv_open_close;
+    data.cooling_open_close            = custom_cmd.cooling_open_close;
+    data.main_valve_open_close         = custom_cmd.main_valve_open_close;
+    data.pressurize_valve_open_close   = custom_cmd.pressurize_valve_open_close;
+    data.depressurize_valve_open_close = custom_cmd.depressurize_valve_open_close;
+    data.auto_state1                   = custom_cmd.auto_state1;
+    data.auto_state2                   = custom_cmd.auto_state2;
+
+    _custom_down_pub.publish(data);
+}
 
 MavlinkReceiver::~MavlinkReceiver()
 {
@@ -137,6 +154,11 @@ void
 MavlinkReceiver::handle_message(mavlink_message_t *msg)
 {
 	switch (msg->msgid) {
+	case MAVLINK_MSG_ID_CUSTOM_DOWN:
+   		 handle_message_custom_down(msg);
+   		 break;
+
+
 	case MAVLINK_MSG_ID_COMMAND_LONG:
 		handle_message_command_long(msg);
 		break;
