@@ -55,7 +55,6 @@ add_custom_command(
 )
 add_custom_target(mavlink_c_generate_uavionix DEPENDS ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h)
 set_source_files_properties(${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h PROPERTIES GENERATED true)
-
 # always generate custom_down dialect
 set(MAVLINK_DIALECT_CUSTOM_DOWN "custom_down")
 add_custom_command(
@@ -72,8 +71,23 @@ add_custom_command(
         COMMENT "Generating Mavlink ${MAVLINK_DIALECT_CUSTOM_DOWN}: ${MAVLINK_GIT_DIR_RELATIVE}/message_definitions/v1.0/${MAVLINK_DIALECT_CUSTOM_DOWN}.xml"
 )
 add_custom_target(mavlink_c_generate_custom_down DEPENDS ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h)
+set_source_files_properties(${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h PROPERTIES GENERATED true)# always generate custom_down dialect
+set(MAVLINK_DIALECT_CUSTOM_DOWN "custom_down")
+add_custom_command(
+        OUTPUT ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h
+        COMMAND
+                ${PYTHON_EXECUTABLE} ${MAVLINK_GIT_DIR}/pymavlink/tools/mavgen.py
+                        --lang C --wire-protocol 2.0
+                        --output ${MAVLINK_LIBRARY_DIR}
+                        ${MAVLINK_GIT_DIR}/message_definitions/v1.0/${MAVLINK_DIALECT_CUSTOM_DOWN}.xml > ${CMAKE_CURRENT_BINARY_DIR}/mavgen_${MAVLINK_DIALECT_CUSTOM_DOWN}.log
+        DEPENDS
+                git_mavlink_v2
+                ${MAVLINK_GIT_DIR}/pymavlink/tools/mavgen.py
+                ${MAVLINK_GIT_DIR}/message_definitions/v1.0/${MAVLINK_DIALECT_CUSTOM_DOWN}.xml
+        COMMENT "Generating Mavlink ${MAVLINK_DIALECT_CUSTOM_DOWN}: ${MAVLINK_GIT_DIR_RELATIVE}/message_definitions/v1.0/${MAVLINK_DIALECT_CUSTOM_DOWN}.xml"
+)
+add_custom_target(mavlink_c_generate_custom_down DEPENDS ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h)
 set_source_files_properties(${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h PROPERTIES GENERATED true)
-
 # generate the primary dialect
 add_custom_command(
 	OUTPUT ${MAVLINK_LIBRARY_DIR}/${CONFIG_MAVLINK_DIALECT}/${CONFIG_MAVLINK_DIALECT}.h
@@ -90,9 +104,7 @@ add_custom_command(
 
 		# generate after uAvionix
 		mavlink_c_generate_uavionix
-		mavlink_c_generate_custom_down
 		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h
-		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h
 
 	COMMENT "Generating Mavlink ${CONFIG_MAVLINK_DIALECT}: ${MAVLINK_GIT_DIR_RELATIVE}/message_definitions/v1.0/${CONFIG_MAVLINK_DIALECT}.xml"
 )
@@ -108,7 +120,6 @@ target_sources(mavlink_c
 	INTERFACE
 		${MAVLINK_LIBRARY_DIR}/${CONFIG_MAVLINK_DIALECT}/${CONFIG_MAVLINK_DIALECT}.h
 		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h
-		 ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h  # 加這行
 )
 target_include_directories(mavlink_c
 	INTERFACE

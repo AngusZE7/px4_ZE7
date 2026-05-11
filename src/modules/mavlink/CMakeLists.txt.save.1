@@ -37,6 +37,7 @@ file(RELATIVE_PATH MAVLINK_GIT_DIR_RELATIVE ${CMAKE_SOURCE_DIR} ${MAVLINK_GIT_DI
 
 px4_add_git_submodule(TARGET git_mavlink_v2 PATH "${MAVLINK_GIT_DIR}")
 
+ source /home/angus/PX4-Autopilot/.venv/bin/activate
 # always generate uAvionix dialect
 set(MAVLINK_DIALECT_UAVIONIX "uAvionix")
 add_custom_command(
@@ -55,7 +56,6 @@ add_custom_command(
 )
 add_custom_target(mavlink_c_generate_uavionix DEPENDS ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h)
 set_source_files_properties(${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h PROPERTIES GENERATED true)
-
 # always generate custom_down dialect
 set(MAVLINK_DIALECT_CUSTOM_DOWN "custom_down")
 add_custom_command(
@@ -73,7 +73,6 @@ add_custom_command(
 )
 add_custom_target(mavlink_c_generate_custom_down DEPENDS ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h)
 set_source_files_properties(${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h PROPERTIES GENERATED true)
-
 # generate the primary dialect
 add_custom_command(
 	OUTPUT ${MAVLINK_LIBRARY_DIR}/${CONFIG_MAVLINK_DIALECT}/${CONFIG_MAVLINK_DIALECT}.h
@@ -90,9 +89,7 @@ add_custom_command(
 
 		# generate after uAvionix
 		mavlink_c_generate_uavionix
-		mavlink_c_generate_custom_down
 		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h
-		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h
 
 	COMMENT "Generating Mavlink ${CONFIG_MAVLINK_DIALECT}: ${MAVLINK_GIT_DIR_RELATIVE}/message_definitions/v1.0/${CONFIG_MAVLINK_DIALECT}.xml"
 )
@@ -108,7 +105,6 @@ target_sources(mavlink_c
 	INTERFACE
 		${MAVLINK_LIBRARY_DIR}/${CONFIG_MAVLINK_DIALECT}/${CONFIG_MAVLINK_DIALECT}.h
 		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h
-		 ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h  # 加這行
 )
 target_include_directories(mavlink_c
 	INTERFACE
