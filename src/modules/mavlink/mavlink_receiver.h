@@ -49,6 +49,7 @@
 #include "mavlink_parameters.h"
 #include "MavlinkStatustextHandler.hpp"
 #include "mavlink_timesync.h"
+#include <mavlink/custom_down/mavlink_msg_custom_down.h>
 #include "tune_publisher.h"
 
 #include <geo/geo.h>
