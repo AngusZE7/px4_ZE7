@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<mavlink>
+ <messages>
+   <message id="191" name="CUSTOM_DOWN">
+     <description>這裡放訊息的描述，必須在 field 之前</description>
+     <field type="int32_t" name="mtv_open_close"/>
+     <field type="int32_t" name="cooling_open_close"/>
+     <field type="int32_t" name="main_valve_open_close"/>
+     <field type="int32_t" name="pressurize_valve_open_close"/>
+     <field type="int32_t" name="depressurize_valve_open_close"/>
+     <field type="int32_t" name="auto_state1"/>
+     <field type="int32_t" name="auto_state2"/>
+   </message>
+ </messages>
+</mavlink>
+

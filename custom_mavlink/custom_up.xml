@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<mavlink>
+  <messages>
+    <message id="190" name="CUSTOM_UP">
+      <description>這裡放訊息的描述，必須在 field 之前</description>
+      <field type="uint64_t" name="timestamp"/>
+      <field type="uint32_t"    name="pressure_1"/>
+      <field type="uint32_t"    name="pressure_2"/>
+      <field type="uint32_t"    name="pressure_3"/>
+      <field type="uint32_t"    name="pressure_4"/>
+      <field type="uint32_t"    name="encoder_1"/>
+      <field type="uint32_t"    name="encoder_2"/>
+      <field type="uint32_t"    name="encoder_3"/>
+      <field type="uint32_t"    name="bms_temperature"/>
+      <field type="uint32_t"    name="bms_voltage"/>
+      <field type="uint32_t"    name="bms_related_1"/>
+      <field type="uint32_t"    name="bms_related_2"/>
+      <field type="uint32_t"    name="bms_related_3"/>
+      <field type="int32_t"    name="state_param_1"/>
+      <field type="int32_t"    name="state_param_2"/>
+      <field type="int32_t"    name="state_param_3"/>
+      <field type="int32_t"    name="state_param_4"/>
+      <field type="int32_t"    name="state_param_5"/>
+
+    </message>
+  </messages>
+</mavlink>
