@@ -61,4 +61,3 @@ private:
 		return false;
 	}
 };
-
