@@ -74,6 +74,23 @@ add_custom_command(
 add_custom_target(mavlink_c_generate_custom_down DEPENDS ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h)
 set_source_files_properties(${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h PROPERTIES GENERATED true)
 
+# always generate custom_up dialect
+set(MAVLINK_DIALECT_CUSTOM_UP "custom_up")
+add_custom_command(
+        OUTPUT ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_UP}/${MAVLINK_DIALECT_CUSTOM_UP}.h
+        COMMAND
+                ${PYTHON_EXECUTABLE} ${MAVLINK_GIT_DIR}/pymavlink/tools/mavgen.py
+                        --lang C --wire-protocol 2.0
+                        --output ${MAVLINK_LIBRARY_DIR}
+                        ${MAVLINK_GIT_DIR}/message_definitions/v1.0/${MAVLINK_DIALECT_CUSTOM_UP}.xml > ${CMAKE_CURRENT_BINARY_DIR}/mavgen_${MAVLINK_DIALECT_CUSTOM_UP}.log
+        DEPENDS
+                git_mavlink_v2
+                ${MAVLINK_GIT_DIR}/pymavlink/tools/mavgen.py
+                ${MAVLINK_GIT_DIR}/message_definitions/v1.0/${MAVLINK_DIALECT_CUSTOM_UP}.xml
+        COMMENT "Generating Mavlink ${MAVLINK_DIALECT_CUSTOM_UP}"
+)
+add_custom_target(mavlink_c_generate_custom_up DEPENDS ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_UP}/${MAVLINK_DIALECT_CUSTOM_UP}.h)
+set_source_files_properties(${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_UP}/${MAVLINK_DIALECT_CUSTOM_UP}.h PROPERTIES GENERATED true)
 # generate the primary dialect
 add_custom_command(
 	OUTPUT ${MAVLINK_LIBRARY_DIR}/${CONFIG_MAVLINK_DIALECT}/${CONFIG_MAVLINK_DIALECT}.h
@@ -91,6 +108,8 @@ add_custom_command(
 		# generate after uAvionix
 		mavlink_c_generate_uavionix
 		mavlink_c_generate_custom_down
+		mavlink_c_generate_custom_up
+		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_UP}/${MAVLINK_DIALECT_CUSTOM_UP}.h
 		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h
 		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h
 
@@ -108,7 +127,8 @@ target_sources(mavlink_c
 	INTERFACE
 		${MAVLINK_LIBRARY_DIR}/${CONFIG_MAVLINK_DIALECT}/${CONFIG_MAVLINK_DIALECT}.h
 		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h
-		 ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h  # 加這行
+		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_DOWN}/${MAVLINK_DIALECT_CUSTOM_DOWN}.h  # 加這行
+		${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_CUSTOM_UP}/${MAVLINK_DIALECT_CUSTOM_UP}.h
 )
 target_include_directories(mavlink_c
 	INTERFACE
