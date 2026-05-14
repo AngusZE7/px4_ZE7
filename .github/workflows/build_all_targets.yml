@@ -138,6 +138,16 @@ jobs:
       - name: Git ownership workaround
         run: git config --system --add safe.directory '*'
 
+      - name: Copy custom MAVLink message definitions
+        run: |
+          cp custom_mavlink/custom_down.xml \
+            src/modules/mavlink/mavlink/message_definitions/v1.0/
+          cp custom_mavlink/custom_up.xml \
+            src/modules/mavlink/mavlink/message_definitions/v1.0/
+          cp custom_mavlink/common.xml \
+            src/modules/mavlink/mavlink/message_definitions/v1.0/
+
+    
       # ccache key breakdown:
       # ccache-<system os>-<system arch>-<builder group>-
       # ccache-<linux>-<arm64>-<aarch64-0>-
