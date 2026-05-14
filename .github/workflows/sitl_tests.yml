@@ -46,6 +46,15 @@ jobs:
       - name: Git Ownership Workaround
         run: git config --system --add safe.directory '*'
 
+      - name: Copy custom MAVLink message definitions
+        run: |
+          cp custom_mavlink/custom_down.xml \
+            src/modules/mavlink/mavlink/message_definitions/v1.0/
+          cp custom_mavlink/custom_up.xml \
+            src/modules/mavlink/mavlink/message_definitions/v1.0/
+          cp custom_mavlink/common.xml \
+            src/modules/mavlink/mavlink/message_definitions/v1.0/
+            
       - id: set-timestamp
         name: Set timestamp for cache
         run: echo "::set-output name=timestamp::$(date +"%Y%m%d%H%M%S")"
