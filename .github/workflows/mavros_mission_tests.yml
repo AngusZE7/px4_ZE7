@@ -1,5 +1,4 @@
 name: MAVROS Mission Tests
-
 on:
   push:
     branches:
@@ -11,24 +10,19 @@ on:
       - '**'
     paths-ignore:
       - 'docs/**'
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
-
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: recursive
-
       - name: Build SITL and Run Tests (inside old ROS container)
         run: |
           docker run --rm \
@@ -39,9 +33,17 @@ jobs:
               set -e
               git config --global --add safe.directory /workspace
               git config --global --add safe.directory "*"
+
+              # 複製自訂 mavlink message 到 submodule 裡
+              cp /workspace/custom_mavlink/custom_down.xml \
+                /workspace/src/modules/mavlink/mavlink/message_definitions/v1.0/
+              cp /workspace/custom_mavlink/custom_up.xml \
+                /workspace/src/modules/mavlink/mavlink/message_definitions/v1.0/
+              cp /workspace/custom_mavlink/common.xml \
+                /workspace/src/modules/mavlink/mavlink/message_definitions/v1.0/
+
               PX4_SBOM_DISABLE=1 make px4_sitl_default
               PX4_SBOM_DISABLE=1 make px4_sitl_default sitl_gazebo-classic
-
               pip2 install --upgrade "pyyaml==3.13"
               
               ./test/rostest_px4_run.sh \
