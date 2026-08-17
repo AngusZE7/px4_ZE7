@@ -1449,7 +1449,7 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 
 	switch (_mode) {
 	case MAVLINK_MODE_NORMAL:
-
+		configure_stream_local("CUSTOM_UP", 10.0f);
 		configure_stream_local("ADSB_VEHICLE", 5.f);
 		configure_stream_local("ALTITUDE", 1.0f);
 		configure_stream_local("ATTITUDE", 15.0f);
@@ -1524,6 +1524,7 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 
 	case MAVLINK_MODE_ONBOARD:
 		// Note: streams requiring low latency come first
+		configure_stream_local("CUSTOM_UP", 10.0f);
 		configure_stream_local("TIMESYNC", 10.0f);
 		configure_stream_local("CAMERA_TRIGGER", unlimited_rate);
 		configure_stream_local("HIGHRES_IMU", 50.0f);
@@ -1695,11 +1696,13 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 	case MAVLINK_MODE_CUSTOM:
 		//stream nothing
 		configure_stream_local("CUSTOM_UP", 10.0f);
+		configure_stream_local("HEARTBEAT", 1.0f);
 		break;
 
 	case MAVLINK_MODE_CONFIG: // USB
 		// Note: streams requiring low latency come first
 		configure_stream_local("TIMESYNC", 10.0f);
+		configure_stream_local("CUSTOM_UP", 10.0f);
 		configure_stream_local("CAMERA_TRIGGER", unlimited_rate);
 		configure_stream_local("LOCAL_POSITION_NED", 30.0f);
 		configure_stream_local("DISTANCE_SENSOR", 10.0f);
