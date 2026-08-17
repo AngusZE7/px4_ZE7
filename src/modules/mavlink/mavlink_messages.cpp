@@ -260,6 +260,9 @@ static_assert(MAV_SENSOR_ROTATION_CUSTOM == static_cast<MAV_SENSOR_ORIENTATION>(
 
 
 static const StreamListItem streams_list[] = {
+#if defined(CUSTOM_UP_HPP)
+        create_stream_list_item<MavlinkStreamCustomUp>(),
+#endif // CUSTOM_UP_HPP
 #if defined(HEARTBEAT_HPP)
 	create_stream_list_item<MavlinkStreamHeartbeat>(),
 #endif // HEARTBEAT_HPP

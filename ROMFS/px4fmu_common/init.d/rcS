@@ -535,7 +535,7 @@ else
 		then
 			sercon
 			echo "Starting MAVLink on /dev/ttyACM0"
-			mavlink start -d /dev/ttyACM0
+			mavlink start -d /dev/ttyACM0 -m config
 		fi
 	fi
 
